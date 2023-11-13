@@ -1,0 +1,318 @@
+openapi: 3.0.1
+info:
+  title: Getting customer information
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /clients:
+    get:
+      summary: Getting a list of clients
+      tags:
+        - Clients
+      operationId: getAllClients
+      responses:
+        "200":
+          description: Successful response with a list of clients
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Clients"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: adding a new client
+      tags:
+        - Clients
+      operationId: createClient
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+      responses:
+        "200":
+          description: Successful adding a new client
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /clients/{idClient}:
+    get:
+      summary: Getting a client by id
+      tags:
+        - Clients
+      operationId: getClientId
+      parameters:
+        - name: idClient
+          in: path
+          required: true
+          description: id Client
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful getting a client by id
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Deletion of the client by id
+      tags:
+        - Clients
+      operationId: deleteClientById
+      parameters:
+        - name: idClient
+          in: path
+          required: true
+          description: id Client
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful deletion of the client by id
+          content:
+            adplication/json: {}
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /clouds:
+    get:
+      summary: Getting a list of servers
+      tags:
+        - Clouds
+      operationId: getAllClouds
+      responses:
+        "200":
+          description: Successful getting a list of servers
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Clouds"
+        "404":
+          description: Not Found
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Server cannot execute the request
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary:  Adding a new virtual server
+      tags:
+        - Clouds
+      operationId: createCloud
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Cloud"
+      responses:
+        "200":
+          description: Successful adding a new virtual server
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Cloud"
+        "404":
+          description: Not Found
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Server cannot execute the request
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /clouds/{idCloud}:
+    put:
+        summary: Updating the virtual server
+        tags:
+          - Clouds
+        description: Updating the virtual server by id
+        operationId: updateCloud
+        parameters:
+        - name: idCloud
+          in: path
+          required: true
+          description: id Cloud
+          schema:
+            type: string
+        requestBody:
+          description: Updating the virtual server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cloud'
+          required: true
+        responses:
+          '200':
+            description: Successful updating the virtual server by id
+            content:
+              adplication/json:
+                schema:
+                  $ref: '#/components/schemas/Cloud'
+
+          "404":
+            description: Not Found
+            content:
+              adplication/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+          "500":
+            description: Server cannot execute the request
+            content:
+              adplication/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+    get:
+      summary: Getting the virtual server by id
+      tags:
+        - Clouds
+      operationId: getCloudId
+      parameters:
+        - name: idCloud
+          in: path
+          required: true
+          description: id Cloud
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful getting the virtual server by id
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Cloud"
+        "404":
+          description: Not Found
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Server cannot execute the request
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Virtual server deletion by id
+      tags:
+        - Clouds
+      operationId: deleteCloudById
+      parameters:
+        - name: idCloud
+          in: path
+          required: true
+          description: id Cloud
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful virtual server deletion by id
+          content:
+            adplication/json: {}
+        "404":
+          description: Not Found
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Server cannot execute the request
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Client:
+      type: object
+      required:
+        - idClient
+        - name
+      properties:
+        idClient:
+          type: integer
+          example: 1
+          description: client Id
+        name:
+          type: string
+          example: John
+          description: client name
+    Clients:
+      type: array
+      items:
+        $ref: "#/components/schemas/Client"
+    Error:
+      type: object
+      required:
+        - codeError
+        - messageError
+      properties:
+        codeError:
+          type: string
+          example: 1a2b8e9f
+          description: error code
+        messageError:
+          type: string
+          example: error
+          description: Error message
+    Cloud:
+      type: object
+      required:
+        - OS
+        - RAM
+        - CPU
+        - SSD
+        - idClient
+      properties:
+        OS:
+          type: string
+          enum:
+            - Windows
+            - Linux
+        RAM:
+          type: integer
+          example: 256
+          description: RAM size
+        CPU:
+          type: integer
+          example: 8
+          description: Number of processor cores
+        SSD:
+          type: integer
+          example: 1024
+          description: ssd size
+        idClient:
+          type: integer
+          example: 1
