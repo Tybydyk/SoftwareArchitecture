@@ -1,0 +1,320 @@
+openapi: 3.0.1
+info:
+  title: Robot vacuum cleaner
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+    description: appServer
+paths:
+  /Robots:
+    get:
+      summary: Get a list of robots
+      tags:
+        - Robot
+      operationId: getAllRobots
+      responses:
+        "200":
+          description: Successfully received the list of robots
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robots"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: creating a robot
+      tags:
+        - Robot
+      operationId: createRobot
+      requestBody:
+        required: true
+        content:
+          adplication/json:
+            schema:
+              $ref: "#/components/schemas/Robot"
+      responses:
+        "200":
+          description: Successfully creating a robot
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /Robot/findById/{robotId}:
+    get:
+      tags:
+        - Robot
+      summary: Getting a robot by id
+      operationId: getRobotById
+      parameters:
+        - name: robotId
+          in: path
+          description: robot id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successfullly received the robot by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+  /Users:
+    get:
+      summary: Get a list of users
+      tags:
+        - User
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Successfully received the list of users
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: creating a user
+      tags:
+        - User
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          adplication/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Successfully creating a user
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /User/findById/{userId}:
+    get:
+      tags:
+        - User
+      summary: Getting a user by id
+      operationId: getUserById
+      parameters:
+        - name: userId
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Successfullly received the user by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+  /Schedule:
+    put:
+      tags:
+        - Schedule
+      summary: Update schedule
+      operationId: updateSchedule
+      requestBody:
+        description: Update schedule
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      responses:
+        '200':
+          description: Successfully updated schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+  /Schedules:
+    get:
+      summary: Get a list of tasks
+      tags:
+        - Schedule
+      operationId: getAllSchedules
+      responses:
+        "200":
+          description: Successful response with a list of tasks
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Schedules"
+        "default":
+          description: All other server responses
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Robot:
+      type: object
+      required:
+        - id
+        - model
+        - version
+        - status
+        - resourse
+        - fabric_model
+        - mac_adress
+        - idGroupUser
+      properties:
+        id:
+          type: integer
+          example: 1
+        model:
+          type: string
+          example: VC-5
+          description: model of a robot vacuum cleaner
+        version:
+          type: string
+          example: "v2.03"
+          description: version of firmware robot vacuum cleaner
+        status:
+          type: string
+          example: "workable"
+        resourse:
+          type: integer
+          example: 75
+          description: battery charge level
+        fabric_model:
+          type: string
+          example: ch--33
+          description: Factory number
+        mac_adress:
+          type: string
+          example: "00:AB:CD:EF:11:22"
+        idGroupUser:
+          type: integer
+          example: 1
+    Robots:
+      type: array
+      items:
+        $ref: "#/components/schemas/Robot"
+    User:
+      type: object
+      required:
+        - id
+        - login
+        - hash_password
+        - email
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: user id
+        login:
+          type: string
+          example: John
+          description: user name
+        hash_password:
+          type: string
+          example: 2cf24dba5fb0a30e
+          description: hash of user password
+        email:
+          type: string
+          example: george@google.com
+          description: user e-mail
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    Schedule:
+      type: object
+      required:
+        - id
+        - dateTime
+        - id_robot
+        - location
+        - mode
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: task id
+        dateTime:
+          type: string
+          example:  2001-01-01 00:00:01
+          description: start date-time
+        id_robot:
+          type: integer
+          example: 1
+          description: robot id
+        location:
+          type: string
+          example: room 1
+          description: area for cleanup
+        mode:
+          type: string
+          example: standard
+          description: cleaning mode
+    Schedules:
+      type: array
+      items:
+        $ref: '#/components/schemas/Schedule'
+    Error:
+      type: object
+      required:
+        - code_error
+        - message_error
+      properties:
+        code_error:
+          type: integer
+          example: -1
+        message_error:
+          type: string
